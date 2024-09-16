@@ -3,14 +3,14 @@ import mongoose from "mongoose";
 let isConnected = false;
 
 const connectDB = async () => {
-    if(isConnected) {
+    if (isConnected) {
         console.log("Using existing connection");
         return;
     }
 
     try {
-        const db = await mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URI, {})
-        isConnected = db.connection[0].readyState;
+        const db = await mongoose.connect(process.env.NEXT_PUBLIC_MONGODB_URI, {});
+        isConnected = db.connection.readyState;
 
         console.log("DB Connected successfully");
     } catch (error) {
@@ -18,6 +18,6 @@ const connectDB = async () => {
         console.log("DB Connection failed");
         process.exit(1);
     }
-}
+};
 
 export default connectDB;
