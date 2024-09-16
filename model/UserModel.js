@@ -34,11 +34,15 @@ const UserSchema = new Schema({
         type: Boolean,
         default: true
     },
+    isVerified: {
+        type: Boolean,
+        default: false
+    },
     massages: [MessageSchema]
 }, {
     timestamps: true
 })
 
 // export UserModel (if not created) or use existing UserModel
-const UserModel = mongoose.model("User", UserSchema) || mongoose.models.User;
-export default UserModel;
+const UserModel = mongoose.models.User || mongoose.model("User", UserSchema);
+export default UserModel; 
