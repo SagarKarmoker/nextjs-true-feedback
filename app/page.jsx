@@ -4,7 +4,9 @@ export default function Home() {
   return (
     <>
       <div>
-        <h1>Home</h1>
+        <h1>
+          True user feedback is the most valuable data you can collect.
+        </h1>
       </div>
     </>
   );
