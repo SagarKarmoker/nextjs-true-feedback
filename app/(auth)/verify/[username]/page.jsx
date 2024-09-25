@@ -42,7 +42,7 @@ export default function VerifyOTP() {
         status: "success",
       })
 
-      router.replace("sign-in")
+      router.replace("/sign-in")
     } catch (error) {
       const errorMessage = error.response.data.message
       toast({
