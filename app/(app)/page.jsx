@@ -1,7 +1,10 @@
+"use client"
 import React from 'react'
 
 export default function Home() {
     return (
-        <div>page</div>
+        <div className='container mx-auto mt-10'>
+            Home page
+        </div>
     )
 }

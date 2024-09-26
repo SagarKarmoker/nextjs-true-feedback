@@ -18,6 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 import { signInSchema } from "@/schemas/signInSchema"
@@ -66,50 +73,60 @@ export default function SigninPage() {
   }
 
   return (
-    <div>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="identifier"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email/Username</FormLabel>
-                <FormControl>
-                  <Input placeholder="email/username" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+    <div className="flex min-h-screen justify-center items-center">
+      <div className="w-1/4">
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-2xl">Sign In to your account</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Form {...form}>
+              <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+                <FormField
+                  control={form.control}
+                  name="identifier"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Email / Username</FormLabel>
+                      <FormControl>
+                        <Input placeholder="email/username" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="password" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+                <FormField
+                  control={form.control}
+                  name="password"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Password</FormLabel>
+                      <FormControl>
+                        <Input type="password" placeholder="password" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? (<>
-              <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Submitting
-            </>) : "Signin"}
-          </Button>
-        </form>
-      </Form>
-
-      <div>
-        <p>Already a member?</p>
-        <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
-          Sign in
-        </Link>
+                <Button className="w-full" type="submit" disabled={isSubmitting}>
+                  {isSubmitting ? (<>
+                    <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Submitting
+                  </>) : "Signin"}
+                </Button>
+              </form>
+            </Form>
+          </CardContent>
+          <CardFooter>
+            <div className="flex gap-2">
+              <p>Dont have an account?</p>
+              <Link href="/sign-up" className="text-blue-600 hover:text-blue-800 font-semibold">
+                Sign up
+              </Link>
+            </div>
+          </CardFooter>
+        </Card>
       </div>
     </div>
   )

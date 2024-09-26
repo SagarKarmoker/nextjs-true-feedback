@@ -19,6 +19,13 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/form"
+import {
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Loader2 } from "lucide-react"
 
@@ -91,85 +98,94 @@ export default function SignupPage() {
     }
 
     return (
-        <div>
-            <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)}>
-                    <FormField
-                        control={form.control}
-                        name="username"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Username</FormLabel>
-                                <FormControl>
-                                    <>
-                                        <Input
-                                            placeholder="username"
-                                            {...field}
-                                            onChange={(e) => {
-                                                field.onChange(e.target.value);
-                                                debounded(e.target.value);
-                                            }}
-                                        />
-                                        {isCheckingUsername && (
-                                            <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" />
-                                        )}
-                                        <p
-                                            className={`text-sm ${usernameMsg === "Username already exists"
-                                                    ? "text-red-500"
-                                                    : "text-green-500"
-                                                }`}
-                                        >
-                                            {usernameMsg}
-                                        </p>
-                                    </>
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+        <div className="flex min-h-screen justify-center items-center">
+            <div className="w-1/4">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-2xl">Signup for your account</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                        <Form {...form}>
+                            <form className="space-y-3" onSubmit={form.handleSubmit(onSubmit)}>
+                                <FormField
+                                    control={form.control}
+                                    name="username"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Username</FormLabel>
+                                            <FormControl>
+                                                <>
+                                                    <Input
+                                                        placeholder="username"
+                                                        {...field}
+                                                        onChange={(e) => {
+                                                            field.onChange(e.target.value);
+                                                            debounded(e.target.value);
+                                                        }}
+                                                    />
+                                                    {isCheckingUsername && (
+                                                        <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" />
+                                                    )}
+                                                    <p
+                                                        className={`text-sm ${usernameMsg === "Username already exists"
+                                                            ? "text-red-500"
+                                                            : "text-green-500"
+                                                            }`}
+                                                    >
+                                                        {usernameMsg}
+                                                    </p>
+                                                </>
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Email</FormLabel>
+                                            <FormControl>
+                                                <Input placeholder="email" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                    <FormField
-                        control={form.control}
-                        name="email"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Email</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="email" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
+                                <FormField
+                                    control={form.control}
+                                    name="password"
+                                    render={({ field }) => (
+                                        <FormItem>
+                                            <FormLabel>Password</FormLabel>
+                                            <FormControl>
+                                                <Input type="password" placeholder="password" {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
 
-                    <FormField
-                        control={form.control}
-                        name="password"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Password</FormLabel>
-                                <FormControl>
-                                    <Input type="password" placeholder="password" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-
-                    <Button type="submit" disabled={isSubmitting}>
-                        {isSubmitting ? (<>
-                            <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Submitting
-                        </>) : "Sign Up"}
-                    </Button>
-                </form>
-            </Form>
-
-            <div>
-                <p>Already a member?</p>
-                <Link href="/sign-in" className="text-blue-600 hover:text-blue-800">
-                    Sign in
-                </Link>
+                                <Button className="w-full" type="submit" disabled={isSubmitting}>
+                                    {isSubmitting ? (<>
+                                        <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Submitting
+                                    </>) : "Sign Up"}
+                                </Button>
+                            </form>
+                        </Form>
+                    </CardContent>
+                    <CardFooter>
+                        <div className="flex gap-2">
+                            <p>Already a member?</p>
+                            <Link href="/sign-in" className="text-blue-600 hover:text-blue-800 font-semibold">
+                                Sign in
+                            </Link>
+                        </div>
+                    </CardFooter>
+                </Card>
             </div>
         </div>
     )
