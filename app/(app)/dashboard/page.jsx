@@ -105,12 +105,12 @@ export default function Dashboard() {
     }
 
     // if user is not logged in
-    if(!session || !session.user) {
+    if (!session || !session.user) {
         return <div>Not logged in</div>
     }
 
     // Copy to clipboard
-    const {username} = session?.user
+    const { username } = session?.user
     // TODO: research
     const baseUrl = `${window.location.protocol}//${window.location.host}`
     const profileUrl = `${baseUrl}/user/${username}`

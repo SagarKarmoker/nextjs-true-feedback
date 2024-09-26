@@ -10,7 +10,7 @@ export default function Navbar() {
 
     return (
 
-        <nav className='sticky top-0 py-4 border-b-2'>
+        <nav className='sticky top-0 py-4 border-b-2 shadow-md'>
             <div className='container mx-auto flex justify-between'>
                 <div>
                     <a href="#" className='text-2xl font-bold'>True Feedback</a>
