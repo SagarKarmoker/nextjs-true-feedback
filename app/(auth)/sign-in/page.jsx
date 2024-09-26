@@ -2,17 +2,14 @@
 import { useEffect, useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import * as z from "zod"
 import Link from "next/link"
 import axios from "axios"
-import { useDebounceCallback } from 'usehooks-ts'
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -59,6 +56,7 @@ export default function SigninPage() {
         status: "error",
         variant: "destructive",
       })
+      setIsSubmitting(false)
     }
 
     if (response.url) {

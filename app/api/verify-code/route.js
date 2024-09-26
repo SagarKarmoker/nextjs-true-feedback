@@ -16,7 +16,8 @@ export async function POST(req) {
         // check for valid code
         const result = verifyCodeQuerySchema.safeParse({ verifyCode: { code } });
         if (!result.success) {
-            return NextResponse.json({ error: result.error }, { status: 400 });
+            console.error("Error in verify-code POST route: ", result.error);
+            return NextResponse.json({ message: result.error }, { status: 400 });
         }
 
         // use when username is encoded in the URL
@@ -27,7 +28,7 @@ export async function POST(req) {
         })
 
         if (!existingUser) {
-            return NextResponse.json({ error: "User not found" }, { status: 404 });
+            return NextResponse.json({ message: "User not found" }, { status: 404 });
         }
 
         const isCodeValid = existingUser.verifyCode === code;
@@ -40,11 +41,11 @@ export async function POST(req) {
         }
 
         if (!isCodeValid || !isCodeNotExpired) {
-            return NextResponse.json({ error: "Invalid or expired code" }, { status: 400 });
+            return NextResponse.json({ message: "Invalid or expired code" }, { status: 400 });
         }
 
     } catch (error) {
         console.error("Error in verify-code POST route: ", error);
-        return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
+        return NextResponse.json({ message: "Internal Server Error" }, { status: 500 });
     }
 }
