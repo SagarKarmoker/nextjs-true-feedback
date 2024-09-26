@@ -1,9 +1,8 @@
 "use client"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import Link from "next/link"
-import axios from "axios"
 import { useToast } from "@/hooks/use-toast"
 import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
@@ -41,34 +40,39 @@ export default function SigninPage() {
     }
   })
 
-  const onSubmit = async (data) => {
-    setIsSubmitting(true)
-    const response = await signIn("credentials", {
+  const onLoginSubmit = async (data) => {
+    console.log("Form Data: ", data); // Logs the submitted form data
+    console.log("Form Object: ", form); // Logs the form object
+
+    const result = await signIn('credentials', {
       redirect: false,
       identifier: data.identifier,
       password: data.password,
-    })
+    });
+    console.log(result);
 
-    if (response.error) {
-      toast({
-        title: "Login Error",
-        description: response.error,
-        status: "error",
-        variant: "destructive",
-      })
-      setIsSubmitting(false)
+    if (result?.error) {
+      if (result.error === 'CredentialsSignin') {
+        toast({
+          title: 'Login Failed',
+          description: 'Incorrect username or password',
+          variant: 'destructive',
+        });
+      } else {
+        toast({
+          title: 'Error',
+          description: result.error,
+          variant: 'destructive',
+        });
+      }
     }
 
-    if (response.url) {
-      toast({
-        title: "Success",
-        description: "You have successfully signed in",
-        status: "success",
-      })
-      setIsSubmitting(false)
-      router.replace("/dashboard")
+    if (result?.url) {
+      router.replace('/dashboard');
     }
-  }
+  };
+
+
 
   return (
     <div className="flex min-h-screen justify-center items-center">
@@ -79,7 +83,7 @@ export default function SigninPage() {
           </CardHeader>
           <CardContent>
             <Form {...form}>
-              <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+              <form className="space-y-4" onSubmit={form.handleSubmit(onLoginSubmit)}>
                 <FormField
                   control={form.control}
                   name="identifier"
@@ -110,8 +114,8 @@ export default function SigninPage() {
 
                 <Button className="w-full" type="submit" disabled={isSubmitting}>
                   {isSubmitting ? (<>
-                    <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Submitting
-                  </>) : "Signin"}
+                    <Loader2 size={16} className="mr-2 h-4 w-4 animate-spin" /> Logging in
+                  </>) : "Login"}
                 </Button>
               </form>
             </Form>

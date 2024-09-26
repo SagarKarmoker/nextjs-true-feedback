@@ -9,44 +9,56 @@ export const authOptions = {
             id: "credentials",
             name: "Credentials",
             credentials: {
-                email: { label: "Email", type: "email" },
+                identifier: { label: "Email or Username", type: "text" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials) {
+                console.log("Credentials", credentials)
                 await connectDB();
                 try {
                     const user = await UserModel.findOne({
                         $or: [
-                            { email: credentials.email },
-                            { username: credentials.email }
+                            { email: credentials.identifier },
+                            { username: credentials.identifier }
                         ]
                     })
 
                     if (!user) {
-                        throw new Error("No user found")
+                        console.log("No user found")
+                        return null; // Return null if no user is found
                     }
 
                     if (!user.isVerified) {
-                        throw new Error("Please verify your account first")
+                        console.log("Please verify your account first")
+                        return null; // Return null if the account is not verified
                     }
 
                     const isValid = await bcrypt.compare(credentials.password, user.password)
                     if (!isValid) {
-                        throw new Error("Invalid password")
+                        console.log("Invalid password")
+                        return null; // Return null if password is invalid
                     }
-                    else {
-                        return user; // If the credentials are valid, the user object will be returned
-                    }
+
+                    // Return user object (or return specific fields only)
+                    return {
+                        _id: user._id,
+                        email: user.email,
+                        username: user.username,
+                        isVerified: user.isVerified,
+                        isAcceptingMsg: user.isAcceptingMsg
+                    };
                 } catch (error) {
                     console.log("Error in authorize", error)
-                    throw new Error("Something went wrong while authorizing", error)
+                    return null; // Return null in case of any other error
                 }
             }
+
         })
+
     ],
     callbacks: {
-        async session({session, token}) {
-            if(token){
+        async session({ session, token }) {
+            if (token) {
                 session.user._id = token._id;
                 session.user.isVerified = token.isVerified;
                 session.user.isAcceptingMsg = token.isAcceptingMsg;
@@ -54,8 +66,10 @@ export const authOptions = {
             }
             return session;
         },
-        async jwt({token, user}) { // modifing the the token
-            if(user){
+        async jwt({ token, user }) { // modifing the the token
+            console.log("User:", user); // Log user
+            console.log("Token:", token);
+            if (user) {
                 token._id = user._id?.toString();
                 token.isVerified = user.isVerified;
                 token.isAcceptingMsg = user.isAcceptingMsg;
@@ -70,5 +84,5 @@ export const authOptions = {
     session: {
         strategy: "jwt"
     },
-    secret: process.env.JWT_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
 }
